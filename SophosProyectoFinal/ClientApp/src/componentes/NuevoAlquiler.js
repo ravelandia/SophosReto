@@ -1,6 +1,9 @@
 ﻿import { Col,Row,ButtonDropdown, DropdownItem,DropdownMenu,DropdownToggle,Dropdown, Button, ModalFooter, Input, Label, FormGroup, Form, ModalBody, ModalHeader, Modal } from "reactstrap";
 import React, { useEffect, useState } from "react";
 
+const fechaActual = new Date();
+const dia = fechaActual.getDate() < 10 ? "0" + fechaActual.getDate() : fechaActual.getDate();
+const fecha = fechaActual.getFullYear() + "-" + (fechaActual.getMonth() + 1) + "-" + dia;
 
 const ModeloAlquiler = {
     nombreCliente: "",
@@ -8,7 +11,7 @@ const ModeloAlquiler = {
     idCliente: 0,
     juego: "",
     idJuego: 0,
-    fechaAlquiler:"",
+    fechaAlquiler:fecha,
     fechaRetorno: "",
     total:0.0
 }

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import NuevoCliente from "./NuevoCliente";
 import NuevoJuego from "./NuevoJuego";
 
-//crear un enum de plataformas
 const plataformas = {
     1: "PlayStation",
     2: "Xbox",
@@ -12,7 +11,6 @@ const plataformas = {
     4: "Pc"
 }
 
-//crear un enum de tupla de numeros
 const tupla = {
     1: [0,10],
     2: [10,20],
@@ -127,11 +125,19 @@ const ManejoTablas = ({ data, setEditar, mostrarModal, setMostrarModal, eliminar
         if (response.ok) {
             const data = await response.json();
             setDatos(data);
+            setEdades(edad);
+            setTipoTabla(true);
+            
+            setDataPlataforma("");
+            setDataDrop(true);
+            setAño("");
         }
         else {
             console.log("error en la lista");
         }
     }
+
+    
 
     useEffect(() => {
         mostrarDirector();
@@ -155,7 +161,7 @@ const ManejoTablas = ({ data, setEditar, mostrarModal, setMostrarModal, eliminar
                             </h5>
                         </CardHeader>
                         <CardBody>
-                            <Row>
+                            <Row >
                                 <Col lg="2">
                                     {
                                         (esCliente) ? (
@@ -173,7 +179,7 @@ const ManejoTablas = ({ data, setEditar, mostrarModal, setMostrarModal, eliminar
                                         )
                                     }
                                 </Col>
-                                <Col lg="6">
+                                <Col lg="8">
 
 
                                     {
@@ -362,83 +368,36 @@ const ManejoTablas = ({ data, setEditar, mostrarModal, setMostrarModal, eliminar
                                                                 </DropdownItem>
                                                                 <DropdownItem
                                                                     onClick={() => {
-                                                                        setEdades(tupla[1]);
                                                                         mostrarEdades(tupla[1]);
-                                                                        setTipoTabla(true);
-                                                                        
-                                                                        setDataPlataforma("");
-                                                                        setDataDrop(true);
-                                                                        setAño("");
                                                                     }}>0-10</DropdownItem>
                                                                 <DropdownItem
                                                                 onClick={()=>{
-                                                                    setEdades(tupla[2]);
+
                                                                     mostrarEdades(tupla[2]);
-                                                                    setTipoTabla(true);
-                                                                    
-                                                                    setDataPlataforma("");
-                                                                        setDataDrop(true);
-                                                                        setAño("");
                                                                 }}>10-20</DropdownItem>
                                                                 <DropdownItem 
                                                                 onClick={()=>{
-                                                                    setEdades(tupla[3]);
                                                                     mostrarEdades(tupla[3]);
-                                                                    setTipoTabla(true);
-
-                                                                    setDataPlataforma("");
-                                                                        setDataDrop(true);
-                                                                        setAño("");
                                                                 }}>20-30</DropdownItem>
                                                                 <DropdownItem
                                                                 onClick={()=>{
-                                                                    setEdades(tupla[4]);
                                                                     mostrarEdades(tupla[4]);
-                                                                    setTipoTabla(true);
-
-                                                                    setDataPlataforma("");
-                                                                        setDataDrop(true);
-                                                                        setAño("");
                                                                 }}>30-40</DropdownItem>
                                                                 <DropdownItem
                                                                 onClick={()=>{
-                                                                    setEdades(tupla[5]);
                                                                     mostrarEdades(tupla[5]);
-                                                                    setTipoTabla(true);
-
-                                                                    setDataPlataforma("");
-                                                                        setDataDrop(true);
-                                                                        setAño("");
                                                                 }}>40-50</DropdownItem>
                                                                 <DropdownItem
                                                                 onClick={()=>{
-                                                                    setEdades(tupla[6]);
                                                                     mostrarEdades(tupla[6]);
-                                                                    setTipoTabla(true);
-
-                                                                    setDataPlataforma("");
-                                                                        setDataDrop(true);
-                                                                        setAño("");
                                                                 }}>50-60</DropdownItem>
                                                                 <DropdownItem
                                                                 onClick={()=>{
-                                                                    setEdades(tupla[7]);
                                                                     mostrarEdades(tupla[7]);
-                                                                    setTipoTabla(true);
-
-                                                                    setDataPlataforma("");
-                                                                        setDataDrop(true);
-                                                                        setAño("");
                                                                 }}>60-70</DropdownItem>
                                                                 <DropdownItem
                                                                 onClick={()=>{
-                                                                    setEdades(tupla[8]);
                                                                     mostrarEdades(tupla[8]);
-                                                                    setTipoTabla(true);
-
-                                                                    setDataPlataforma("");
-                                                                        setDataDrop(true);
-                                                                        setAño("");
                                                                 }}>70-...</DropdownItem>
                                                             </DropdownMenu>
                                                         </ButtonDropdown>
@@ -494,6 +453,7 @@ const ManejoTablas = ({ data, setEditar, mostrarModal, setMostrarModal, eliminar
 
                                 </Col>
                             </Row>
+                            
                             <hr></hr>
                             {
                                 (tipoTabla) ? (

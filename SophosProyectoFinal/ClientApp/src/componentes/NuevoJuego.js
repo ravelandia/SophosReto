@@ -59,7 +59,7 @@ const NuevoJuego = ({ mostrar, setMostrar,editarJuego,setEditarJuego, nuevoJuego
     return (
         <Modal isOpen={mostrar }>
             <ModalHeader>
-                Editar Cliente
+                Juego 
             </ModalHeader>
             <ModalBody>
                 <Form>
@@ -145,6 +145,18 @@ const NuevoJuego = ({ mostrar, setMostrar,editarJuego,setEditarJuego, nuevoJuego
                                 <Input name="plataforma" onChange={(e) => actualizar(e)} value={editarJuego.plataforma} disabled />
                             ) : (
                                     <Input name="plataforma" onChange={(e) => actualizar(e)} value={editarJuego.plataforma}  />
+                                    )
+                        }
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>
+                            Protagonista
+                        </Label>
+                        {
+                            (editar && nuevoJuego == false) ? (
+                                <Input name="protagonista" onChange={(e) => actualizar(e)} value={editarJuego.protagonista} disabled />
+                            ) : (
+                                    <Input name="protagonista" onChange={(e) => actualizar(e)} value={editarJuego.protagonista}  />
                                     )
                         }
                     </FormGroup>

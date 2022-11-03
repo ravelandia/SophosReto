@@ -1,4 +1,4 @@
-﻿import { Button, CardBody, CardHeader, Card, Col, Container, Row, Table } from "reactstrap";
+﻿import { Button, CardBody, CardHeader, Card, Col, Container, Row, Table, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import React, { useEffect, useState } from "react";
 import NuevoAlquiler from "./NuevoAlquiler";
 
@@ -11,14 +11,18 @@ const AlquilerTabla = () => {
     const [cliente, setCliente] = useState([])
     const [juego, setJuego] = useState([])
     const [mostrar, setmostrar] = useState(false)
-    const[frecuente,setFrecuente]=useState(false)
+    const [frecuente, setFrecuente] = useState(false)
+    const [dropdownLanzamiento, setDropdownLanzamiento] = useState(false)
+    const [clienteTabla, setClienteTabla] = useState([])
+    const [clienteAlquila, setClienteAlquila] = useState([])
+    const [contenidoTabla, setContenidoTabla] = useState([])
 
     const obtenerAlquiler = async () => {
         const response = await fetch("api/bd/Alquiler");
         if (response.ok) {
             const data = await response.json();
-            data.map((mapa) => { 
-                mapa.fechaAlquiler = mapa.fechaAlquiler.slice(0,10);
+            data.map((mapa) => {
+                mapa.fechaAlquiler = mapa.fechaAlquiler.slice(0, 10);
                 mapa.fechaRetorno = mapa.fechaRetorno.slice(0, 10);
             })
             setAlquiler(data);
@@ -57,8 +61,36 @@ const AlquilerTabla = () => {
         }
     }
 
+    const AlquilerClientes = async () => {
+        const response = await fetch("api/bd/Alquiler/Clientes");
+        if (response.ok) {
+            const data = await response.json();
+            setClienteTabla(data);
+        } else {
+            console.log("error en la lista");
+        }
+    }
+
+    const obtenerAlquilerCliente = async (idcliente) => {
+        const response = await fetch("api/bd/Alquiler");
+        if (response.ok) {
+            const data = await response.json();
+            data.map((mapa) => {
+                mapa.fechaAlquiler = mapa.fechaAlquiler.slice(0, 10);
+                mapa.fechaRetorno = mapa.fechaRetorno.slice(0, 10);
+            })
+            //quitar los que no son del cliente
+            const alquilerCliente = data.filter((alquiler) => alquiler.idCliente === idcliente);
+
+            setAlquiler(alquilerCliente);
+        } else {
+            console.log("error en la lista");
+        }
+    }
+
     useEffect(() => {
         obtenerAlquiler();
+        AlquilerClientes();
     }, [])
 
     const cargarDatos = () => {
@@ -99,15 +131,53 @@ const AlquilerTabla = () => {
                                                 Ventas del dia
                                             </Button>
                                         ) : (
-                                                <Button color="success"
-                                                    onClick={() => {
-                                                        obtenerAlquilerDia();
-                                                        setFrecuente(true);
-                                                    }}>
-                                                    Ventas del dia
+                                            <Button color="success"
+                                                onClick={() => {
+                                                    obtenerAlquilerDia();
+                                                    setFrecuente(true);
+                                                }}>
+                                                Ventas del dia
                                             </Button>
                                         )
                                     }
+                                </Col>
+                                <Col>
+                                    <ButtonDropdown
+                                        toggle={() => { setDropdownLanzamiento(!dropdownLanzamiento) }}
+                                        isOpen={dropdownLanzamiento}>
+                                        <DropdownToggle color="success" caret>
+                                            {
+                                                (clienteAlquila.length === 0) ? (
+                                                    "Clientes"
+                                                ) : (
+                                                    clienteAlquila.nombre + " " + clienteAlquila.apellido
+                                                )
+                                            }
+                                        </DropdownToggle>
+                                        <DropdownMenu>
+                                            <DropdownItem
+                                                onClick={() => {
+                                                    obtenerAlquiler();
+                                                    setClienteAlquila([]);
+                                                }}>
+                                                Sin filtro
+                                            </DropdownItem>
+                                            {
+                                                clienteTabla.map((cliente) => {
+                                                    return (
+                                                        <DropdownItem
+                                                            onClick={() => {
+                                                                setClienteAlquila(cliente);
+                                                                obtenerAlquilerCliente(cliente.idCliente);
+                                                            }}>
+                                                            {cliente.nombre} {cliente.apellido}
+                                                        </DropdownItem>
+                                                    )
+                                                })
+
+                                            }
+                                        </DropdownMenu>
+                                    </ButtonDropdown>
                                 </Col>
                             </Row>
                             <hr></hr>
@@ -141,7 +211,7 @@ const AlquilerTabla = () => {
                                                     </>
                                                 }
                                             </tr>
-                                            ))
+                                        ))
                                     }
                                 </tbody>
                             </Table>
@@ -154,10 +224,10 @@ const AlquilerTabla = () => {
                 clientes={cliente}
                 mostrar={mostrar}
                 setMostrar={setmostrar}
-                actualizarTabla={cargarDatos }
+                actualizarTabla={cargarDatos}
             />
 
         </Container>
-        )
+    )
 }
 export default AlquilerTabla;

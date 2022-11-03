@@ -277,10 +277,8 @@ namespace SophosProyectoFinal.Controllers
                     }
                 }
             }
-            //juegos menos frecuentes
             var frecuencia = listaJuegosJugados.GroupBy(c => c.IdJuego).Select(c => new { IdJuego = c.Key, Frecuencia = c.Count() }).OrderBy(c => c.Frecuencia).ToList();
             listaJuegos=new List<Juego>();
-            //añadir sin que se repitan los juegos
             foreach (var item in frecuencia)
             {
                 foreach (var juego in listaJuegosJugados)
@@ -295,7 +293,13 @@ namespace SophosProyectoFinal.Controllers
             return StatusCode(StatusCodes.Status200OK, listaJuegos);
         }
 
-
+        [HttpGet]
+        [Route("Alquiler/Clientes")]
+        public async Task<IActionResult> AlquilerClientes(){
+            List<Alquiler> list= await _dbcontext.Alquilers.ToListAsync();
+            var lista=list.GroupBy(c=>c.IdCliente).Select(c=>new {IdCliente=c.Key,nombre=c.Select(x=>x.NombreCliente).FirstOrDefault(), apellido=c.Select(x=>x.ApellidoCliente).FirstOrDefault()}).ToList();
+            return StatusCode(StatusCodes.Status200OK, lista);
+        }
 
     }
 }
