@@ -1,4 +1,4 @@
-import { Button, CardBody, CardHeader, Card, Col, Container, Row } from "reactstrap";
+import { NavItem,NavLink,Nav,Collapse,NavbarToggler,NavbarBrand,Navbar,Button, CardBody, CardHeader, Card, Col, Container, Row } from "reactstrap";
 //import TablaCliente from "./componentes/TablaCliente";
 import React, { useEffect, useState } from "react";
 //import NuevoCliente from "./componentes/NuevoCliente";
@@ -14,6 +14,7 @@ const App = () => {
     const [editar, setEditar] = useState(null);
     const [clienteJugador, setClienteJugador] = useState(true);
 
+    const [isOpen, setIsOpen] = useState(false);
 
     const mostrarCliente = async () => {
         const response = await fetch("api/bd/Cliente");
@@ -25,10 +26,7 @@ const App = () => {
         }
     }
 
-    useEffect(() => {
-        mostrarCliente();
-        mostrarJuego();
-    }, [])
+    
 
     const guardarCliente = async (cliente) => {
         const response = await fetch("api/bd/NuevoCliente", {
@@ -72,7 +70,6 @@ const App = () => {
         }
     }
 
-    //Logica Juegos
 
     const [juegos, setJuegos] = useState([]);
     const mostrarJuego = async () => {
@@ -85,10 +82,45 @@ const App = () => {
         }
     }
 
+    useEffect(() => {
+        mostrarCliente();
+        mostrarJuego();
+    }, [])
+
+    const[colpase,setColapse]=useState(false);
     return (
         <div>
+            <Navbar color="light" light expand="md">
+                <NavbarBrand ><strong>GameStore</strong></NavbarBrand>
+                <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
+                <Collapse isOpen={isOpen} navbar>
+                    <Nav className="mr-auto" navbar>
+                        <NavItem>
+                            <NavLink href="#"onClick={() => {
+                                mostrarCliente();
+                                setClienteJugador(true);
+                            }}>
+                                {clienteJugador ? <strong>Clientes</strong> : 
+                                    
+                                "Clientes"}
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink href="#" onClick={() => {
+                                mostrarJuego();
+                                setClienteJugador(false);
+                                }}>
+                                {!clienteJugador ? <strong>Juegos</strong> :
+                                    "Juegos"}
+                            </NavLink>
+                        </NavItem>
+                    </Nav>
+                </Collapse>
+            </Navbar>
+
             <Container className="mt-5 pb-0">
-                <Row>
+                {/*
+                    <Row>
                     <Col lg="1">
                         
                         {
@@ -126,6 +158,7 @@ const App = () => {
                         }
                     </Col>
                 </Row>
+                */ }
             </Container>
 
             {
